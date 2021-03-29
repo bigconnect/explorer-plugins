@@ -15,7 +15,13 @@
 
     <modules>
         <module>auth-username-only</module>
+        <module>auth-username-password</module>
+        <module>chart-product</module>
         <module>face-recognition</module>
+        <module>graph-product</module>
+        <module>map-product</module>
+        <module>rest-explorer</module>
+        <module>terms-of-use</module>
     </modules>
 
     <dependencies>
