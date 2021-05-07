@@ -53,7 +53,11 @@ require([
                 cls: 'requires-EDIT',
                 event: 'googleTranslate',
                 canHandle: (objects) => {
-                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0;
+                    const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
+                    if (!hasLanguage)
+                        return false;
+
+                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
                 }
             },
             {
@@ -62,14 +66,25 @@ require([
                 cls: 'requires-EDIT',
                 event: 'googleS2T',
                 canHandle: (objects) => {
+                    const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
+                    if (!hasLanguage)
+                        return false;
+
                     return F.vertex.props(objects.vertices[0], "mediaVideoFormat").length > 0
                         || F.vertex.props(objects.vertices[0], "mediaAudioFormat").length > 0;
                 }
             },
         ],
         canHandle: (objects) => {
-            return objects.vertices.length === 1 &&
-                (F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
+            const singleVeretx = objects.vertices.length === 1;
+            if (!singleVeretx)
+                return false;
+
+            const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
+            if (!hasLanguage)
+                return false;
+
+            return (F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
                     || F.vertex.props(objects.vertices[0], "mediaVideoFormat").length > 0
                     || F.vertex.props(objects.vertices[0], "mediaAudioFormat").length > 0)
         }
