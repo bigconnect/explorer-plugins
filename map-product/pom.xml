@@ -6,7 +6,7 @@
     <parent>
         <artifactId>web-plugins</artifactId>
         <groupId>io.bigconnect</groupId>
-        <version>4.2.0</version>
+        <version>4.2.1</version>
     </parent>
 
     <artifactId>web-product-map</artifactId>
@@ -20,13 +20,13 @@
                 <version>${plugin.frontend}</version>
                 <configuration>
                     <workingDirectory>src/main/resources/com/mware/web/product/map</workingDirectory>
-                    <installDirectory>${frontend.installDirectory}</installDirectory>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>yarn install</id>
+                        <id>npm install</id>
                         <goals>
-                            <goal>yarn</goal>
+                            <goal>install-node-and-npm</goal>
+                            <goal>npm</goal>
                         </goals>
                     </execution>
                     <execution>
