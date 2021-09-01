@@ -45,11 +45,19 @@ import com.mware.web.framework.Handler;
 import com.mware.web.product.map.routes.RemoveVertices;
 import com.mware.web.product.map.routes.UpdateVertices;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 
 @Name("Product: Map")
 @Description("Map visualization for entities containing geolocation data")
 public class MapWebAppPlugin implements WebAppPlugin {
+    private final MapWorkProductService workProductService;
+
+    @Inject
+    public MapWebAppPlugin(MapWorkProductService workProductService) {
+        this.workProductService = workProductService;
+    }
+
     @Override
     public void init(WebApp app, ServletContext servletContext, Handler authenticationHandler) {
         Class<? extends Handler> authenticationHandlerClass = authenticationHandler.getClass();
@@ -75,5 +83,9 @@ public class MapWebAppPlugin implements WebAppPlugin {
         app.registerLess("/com/mware/web/product/map/style.less");
         app.registerLess("/com/mware/web/product/map/layers/mapLayers.less");
         app.registerLess("/com/mware/web/product/map/detail/geoShapeDetail.less");
+    }
+
+    public MapWorkProductService getWorkProductService() {
+        return workProductService;
     }
 }

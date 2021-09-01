@@ -61,4 +61,9 @@ public class UsernameOnlyWebAppPlugin implements WebAppPlugin {
 
         app.post(AuthenticationHandler.LOGIN_PATH, InjectHelper.getInstance(Login.class));
     }
+
+    @Override
+    public boolean systemPlugin() {
+        return true;
+    }
 }

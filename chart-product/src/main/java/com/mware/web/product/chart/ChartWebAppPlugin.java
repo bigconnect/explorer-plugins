@@ -36,6 +36,7 @@
  */
 package com.mware.web.product.chart;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mware.core.model.Description;
 import com.mware.core.model.Name;
@@ -51,7 +52,11 @@ import javax.servlet.ServletContext;
 @Description("Charting capability")
 @Singleton
 public class ChartWebAppPlugin implements WebAppPlugin {
-    public ChartWebAppPlugin() {
+    private final ChartWorkProductService workProductService;
+
+    @Inject
+    public ChartWebAppPlugin(ChartWorkProductService workProductService) {
+        this.workProductService = workProductService;
     }
 
     @Override
@@ -80,5 +85,9 @@ public class ChartWebAppPlugin implements WebAppPlugin {
         app.registerResourceBundle("/com/mware/web/product/chart/messages.properties");
 
         app.registerLess("/com/mware/web/product/chart/style.less");
+    }
+
+    public ChartWorkProductService getWorkProductService() {
+        return workProductService;
     }
 }
