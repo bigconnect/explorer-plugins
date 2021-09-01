@@ -84,4 +84,9 @@ public class UsernamePasswordWebAppPlugin implements WebAppPlugin {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    @Override
+    public boolean systemPlugin() {
+        return true;
+    }
 }

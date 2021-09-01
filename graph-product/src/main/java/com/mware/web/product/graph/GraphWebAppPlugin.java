@@ -63,16 +63,19 @@ public class GraphWebAppPlugin implements WebAppPlugin {
     private final SchemaRepository schemaRepository;
     private final UserRepository userRepository;
     private final AuthorizationRepository authorizationRepository;
+    private final GraphWorkProductService workProductService;
 
     @Inject
     public GraphWebAppPlugin(
             SchemaRepository schemaRepository,
             UserRepository userRepository,
-            AuthorizationRepository authorizationRepository
+            AuthorizationRepository authorizationRepository,
+            GraphWorkProductService workProductService
     ) {
         this.schemaRepository = schemaRepository;
         this.userRepository = userRepository;
         this.authorizationRepository = authorizationRepository;
+        this.workProductService = workProductService;
     }
 
     @Override
@@ -107,5 +110,9 @@ public class GraphWebAppPlugin implements WebAppPlugin {
         app.registerLess("/com/mware/web/product/graph/css.less");
         app.registerResourceBundle("/com/mware/web/product/graph/messages.properties");
         app.registerFile("/com/mware/web/product/graph/select-arrow.png", "image/png");
+    }
+
+    public GraphWorkProductService getWorkProductService() {
+        return workProductService;
     }
 }
