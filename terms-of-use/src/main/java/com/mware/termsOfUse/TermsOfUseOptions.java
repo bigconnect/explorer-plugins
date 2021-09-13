@@ -28,4 +28,19 @@ public class TermsOfUseOptions extends OptionHolder {
             String.class,
             null
     );
+
+    private TermsOfUseOptions() {
+        super();
+    }
+
+    private static volatile TermsOfUseOptions instance;
+
+    public static synchronized TermsOfUseOptions instance() {
+        if (instance == null) {
+            instance = new TermsOfUseOptions();
+            // Should initialize all static members first, then register.
+            instance.registerOptions();
+        }
+        return instance;
+    }
 }
