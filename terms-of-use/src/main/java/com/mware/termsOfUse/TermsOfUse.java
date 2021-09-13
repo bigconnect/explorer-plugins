@@ -56,11 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TermsOfUse implements ParameterizedHandler {
-    public static final String TITLE_PROPERTY = "termsOfUse.title";
-    public static final String DEFAULT_TITLE = "termsOfUse.title config propert";
-    public static final String HTML_PROPERTY = "termsOfUse.html";
-    public static final String DEFAULT_HTML = "termsOfUse.html config property";
-    public static final String DATE_PROPERTY = "termsOfUse.date";
     public static final String DATE_PROPERTY_FORMAT = "yyyy-MM-dd";
     private static final String UI_PREFERENCE_KEY = "termsOfUse";
     private static final String UI_PREFERENCE_HASH_SUBKEY = "hash";
@@ -73,17 +68,17 @@ public class TermsOfUse implements ParameterizedHandler {
     protected TermsOfUse(Configuration configuration,
                          UserRepository userRepository) {
         this.userRepository = userRepository;
-        String title = configuration.get(TITLE_PROPERTY, DEFAULT_TITLE);
-        String html = configuration.get(HTML_PROPERTY, DEFAULT_HTML);
+        String title = configuration.get(TermsOfUseOptions.TITLE_PROPERTY);
+        String html = configuration.get(TermsOfUseOptions.HTML_PROPERTY);
         termsHash = hash(html);
         Date date = null;
-        String dateString = configuration.get(DATE_PROPERTY, null);
+        String dateString = configuration.get(TermsOfUseOptions.DATE_PROPERTY);
         if (dateString != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_PROPERTY_FORMAT);
             try {
                 date = sdf.parse(dateString);
             } catch (ParseException e) {
-                throw new BcException("unable to parse " + DATE_PROPERTY + " property with format " + DATE_PROPERTY_FORMAT, e);
+                throw new BcException("unable to parse " + TermsOfUseOptions.DATE_PROPERTY.name() + " property with format " + DATE_PROPERTY_FORMAT, e);
             }
         }
 
