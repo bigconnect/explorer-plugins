@@ -39,7 +39,7 @@ public class GoogleTranslate implements ParameterizedHandler {
         GoogleTranslateSchemaContribution.GOOGLE_TRANSLATE_PROPERTY.setProperty(e, Boolean.TRUE, Visibility.EMPTY, authorizations);
         graph.flush();
 
-        workQueueRepository.pushGraphPropertyQueue(
+        workQueueRepository.pushOnDwQueue(
                 e,
                 null, GoogleTranslateSchemaContribution.GOOGLE_TRANSLATE_PROPERTY.getPropertyName(),
                 workspaceId, null, Priority.HIGH, ElementOrPropertyStatus.UPDATE, null
