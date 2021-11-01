@@ -45,7 +45,7 @@ public class GoogleSpeech2Text implements ParameterizedHandler {
             Speech2TextSchemaContribution.GOOGLE_S2T_PROPERTY.setProperty(e, Boolean.TRUE, Visibility.EMPTY, authorizations);
             graph.flush();
 
-            workQueueRepository.pushGraphPropertyQueue(
+            workQueueRepository.pushOnDwQueue(
                     e,
                     null, Speech2TextSchemaContribution.GOOGLE_S2T_PROPERTY.getPropertyName(),
                     workspaceId, null, Priority.HIGH, ElementOrPropertyStatus.UPDATE, null
