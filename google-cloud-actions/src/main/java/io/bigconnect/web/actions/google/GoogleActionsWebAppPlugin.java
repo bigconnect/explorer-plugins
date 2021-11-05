@@ -59,6 +59,7 @@ public class GoogleActionsWebAppPlugin implements WebAppPlugin {
         app.post("/google/s2t", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, GoogleSpeech2Text.class);
 
         app.registerJavaScript("/io/bigconnect/web/actions/google/plugin.js");
+        app.registerJavaScript("/io/bigconnect/web/actions/google/speech2TextResult.js");
         app.registerResourceBundle("/io/bigconnect/web/actions/google/messages.properties");
         app.registerWebWorkerJavaScript("/io/bigconnect/web/actions/google/service.js");
     }

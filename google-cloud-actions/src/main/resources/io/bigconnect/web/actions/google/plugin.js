@@ -43,6 +43,29 @@ require([
 ], function (registry, i18n, F, bcApi) {
     'use strict';
 
+    registry.registerExtension('org.bigconnect.activity', {
+        type: 's2t',
+        kind: 'longRunningProcess',
+        allowCancel: false,
+        titleRenderer: function(el, process) {
+            el.textContent = i18n('activity.tasks.type.s2t.title');
+            require([
+                'util/withDataRequest',
+                'util/vertex/formatters'
+            ], function(withDataRequest, F) {
+                withDataRequest.dataRequest('vertex', 'store', {
+                    workspaceId: process.workspaceId,
+                    vertexIds: [ process.vertexId ]
+                }).done(function(vertices) {
+                    if (vertices.length === 1) {
+                        el.textContent = F.string.truncate(F.vertex.title(vertices[0]), 16);
+                    }
+                });
+            });
+        },
+        finishedComponentPath: 'io/bigconnect/web/actions/google/speech2TextResult'
+    });
+
     registry.registerExtension('org.bigconnect.detail.toolbar', {
         title: i18n('google.menu'),
         event: 'google',
@@ -94,9 +117,9 @@ require([
         $(document).on('googleTranslate', (e, data) => {
             const vertex = data.vertices[0];
             api.dataRequest('google', 'translate', vertex.id)
-                .then((result) => {
+                .then(() => {
                     $.growl.notice({
-                        message: 'The item was submitted to Google. Please use the Refresh action to see the latest updates.',
+                        message: 'The item was submitted to Google. You can check the progress in the activity pane.',
                     });
                 })
                 .catch(e => {
@@ -123,7 +146,7 @@ require([
                 })
                 .catch(e => {
                     console.log(e);
-                    $.growl.error({ title: 'Error queueing document for Speech2Text' });
+                    $.growl.error({ title: 'Error', message: e.json && e.json.error ? e.json.error : 'Unknown error' });
                 });
         });
     });
