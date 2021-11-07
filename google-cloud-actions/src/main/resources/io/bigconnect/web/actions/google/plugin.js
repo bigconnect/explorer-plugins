@@ -119,7 +119,7 @@ require([
             api.dataRequest('google', 'translate', vertex.id)
                 .then(() => {
                     $.growl.notice({
-                        message: 'The item was submitted to Google. You can check the progress in the activity pane.',
+                        message: 'The item was submitted to Google. Please use the Refresh action to see the latest updates.',
                     });
                 })
                 .catch(e => {
@@ -141,7 +141,7 @@ require([
             api.dataRequest('google', 's2t', vertex.id)
                 .then((result) => {
                     $.growl.notice({
-                        message: 'The item was submitted to Google. Please use the Refresh action to see the latest updates.',
+                        message: 'The item was submitted to Google. You can check the progress in the activity pane.',
                     });
                 })
                 .catch(e => {
