@@ -42,6 +42,7 @@ import com.mware.core.exception.BcAccessDeniedException;
 import com.mware.core.model.role.AuthorizationRepository;
 import com.mware.core.model.schema.GraphProductSchema;
 import com.mware.core.model.workQueue.WebQueueRepository;
+import com.mware.core.model.workspace.WorkspaceHelper;
 import com.mware.core.model.workspace.WorkspaceRepository;
 import com.mware.core.user.User;
 import com.mware.ge.Authorizations;
@@ -57,7 +58,6 @@ import com.mware.web.model.ClientApiSuccess;
 import com.mware.web.parameterProviders.ActiveWorkspaceId;
 import com.mware.web.parameterProviders.SourceGuid;
 import com.mware.web.product.graph.GraphWorkProductService;
-import com.mware.workspace.WorkspaceHelper;
 
 @Singleton
 public class NodeSetTitle implements ParameterizedHandler {

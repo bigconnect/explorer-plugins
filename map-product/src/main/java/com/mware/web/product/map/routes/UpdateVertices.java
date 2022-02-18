@@ -46,6 +46,7 @@ import com.mware.core.model.role.AuthorizationRepository;
 import com.mware.core.model.workQueue.Priority;
 import com.mware.core.model.workQueue.WebQueueRepository;
 import com.mware.core.model.workspace.Workspace;
+import com.mware.core.model.workspace.WorkspaceHelper;
 import com.mware.core.model.workspace.WorkspaceRepository;
 import com.mware.core.security.VisibilityTranslator;
 import com.mware.core.user.User;
@@ -62,7 +63,6 @@ import com.mware.web.model.ClientApiSuccess;
 import com.mware.web.parameterProviders.ActiveWorkspaceId;
 import com.mware.web.parameterProviders.SourceGuid;
 import com.mware.web.product.map.MapWorkProductService;
-import com.mware.workspace.WorkspaceHelper;
 
 import java.util.Map;
 

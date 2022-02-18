@@ -40,13 +40,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mware.core.exception.BcAccessDeniedException;
 import com.mware.core.exception.BcException;
-import com.mware.core.model.clientapi.dto.ClientApiWorkspace;
 import com.mware.core.model.graph.GraphRepository;
 import com.mware.core.model.graph.GraphUpdateContext;
 import com.mware.core.model.role.AuthorizationRepository;
 import com.mware.core.model.workQueue.Priority;
 import com.mware.core.model.workQueue.WebQueueRepository;
-import com.mware.core.model.workspace.Workspace;
+import com.mware.core.model.workspace.WorkspaceHelper;
 import com.mware.core.model.workspace.WorkspaceRepository;
 import com.mware.core.user.User;
 import com.mware.core.util.ClientApiConverter;
@@ -62,7 +61,6 @@ import com.mware.web.parameterProviders.ActiveWorkspaceId;
 import com.mware.web.parameterProviders.SourceGuid;
 import com.mware.web.product.graph.GraphWorkProductService;
 import com.mware.web.product.graph.model.GraphUpdateProductEdgeOptions;
-import com.mware.workspace.WorkspaceHelper;
 
 @Singleton
 public class CollapseVertices implements ParameterizedHandler {

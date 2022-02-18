@@ -47,6 +47,7 @@ import com.mware.core.model.role.AuthorizationRepository;
 import com.mware.core.model.workQueue.Priority;
 import com.mware.core.model.workQueue.WebQueueRepository;
 import com.mware.core.model.workspace.Workspace;
+import com.mware.core.model.workspace.WorkspaceHelper;
 import com.mware.core.model.workspace.WorkspaceRepository;
 import com.mware.core.user.User;
 import com.mware.core.util.ClientApiConverter;
@@ -63,7 +64,6 @@ import com.mware.web.parameterProviders.SourceGuid;
 import com.mware.web.product.graph.GraphWorkProductService;
 import com.mware.web.product.graph.model.GraphUpdateProductEdgeOptions;
 import com.mware.workspace.WebWorkspaceRepository;
-import com.mware.workspace.WorkspaceHelper;
 
 import java.util.Map;
 import java.util.Set;
