@@ -206,7 +206,7 @@ define([
             }).fail(function(xhr, status, error) {
                 self.submitting = false;
                 if (xhr.status === 403) {
-                    error = 'Invalid Username / Password';
+                    error = 'Numa utilizator / parola invalide';
                 }
                 $error.text(error);
                 self.enableButton(true);

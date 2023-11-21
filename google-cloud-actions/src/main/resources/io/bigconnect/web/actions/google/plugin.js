@@ -119,12 +119,12 @@ require([
             api.dataRequest('google', 'translate', vertex.id)
                 .then(() => {
                     $.growl.notice({
-                        message: 'The item was submitted to Google. Please use the Refresh action to see the latest updates.',
+                        message: 'Obiectul a fost trimits catre Google. Folositi Refresh pentru a vedea progresul.',
                     });
                 })
                 .catch(e => {
                     console.log(e);
-                    $.growl.error({ title: 'Error queueing document for translation' });
+                    $.growl.error({ title: 'Eroare trimitere document la servicul de traducere' });
                 });
         });
         $(document).on('googleS2T', (e, data) => {
@@ -133,7 +133,7 @@ require([
 
             if (inProgress) {
                 $.growl.warning({
-                    message: `Operation in progress. Please refresh the item to see the latest updates.`,
+                    message: `Operatia este in executie. Folositi Refresh pentru a vedea progresul.`,
                 });
                 return;
             }
@@ -141,12 +141,12 @@ require([
             api.dataRequest('google', 's2t', vertex.id)
                 .then((result) => {
                     $.growl.notice({
-                        message: 'The item was submitted to Google. You can check the progress in the activity pane.',
+                        message: 'Obiectul a fost trimits catre Google. Folositi Refresh pentru a vedea progresul in panoul de activitati.',
                     });
                 })
                 .catch(e => {
                     console.log(e);
-                    $.growl.error({ title: 'Error', message: e.json && e.json.error ? e.json.error : 'Unknown error' });
+                    $.growl.error({ title: 'Error', message: e.json && e.json.error ? e.json.error : 'Eroare necunoscuta' });
                 });
         });
     });

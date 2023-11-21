@@ -15,7 +15,6 @@
     <name>BigConnect Explorer: Web: Plugins</name>
 
     <modules>
-        <module>auth-username-only</module>
         <module>auth-username-password</module>
         <module>chart-product</module>
         <module>graph-product</module>
