@@ -1,4 +1,4 @@
-package io.bigconnect.web.actions.google.routes;
+package io.bigconnect.web.actions.video.routes;
 
 import com.mware.bigconnect.ffmpeg.AudioFormat;
 import com.mware.core.exception.BcException;
@@ -27,22 +27,18 @@ import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 
 public class GoogleSpeech2Text implements ParameterizedHandler {
-    private final static BcLogger LOGGER = BcLoggerFactory.getLogger(GoogleSpeech2Text.class);
     private static final AudioFormat[] ALLOWED_AUDIO_FORMATS = new AudioFormat[]{AudioFormat.MP4};
 
     private final Graph graph;
     private final LongRunningProcessRepository longRunningProcessRepository;
-    private final UserNotificationRepository userNotificationRepository;
 
     @Inject
     public GoogleSpeech2Text(
             Graph graph,
-            LongRunningProcessRepository longRunningProcessRepository,
-            UserNotificationRepository userNotificationRepository
+            LongRunningProcessRepository longRunningProcessRepository
     ) {
         this.graph = graph;
         this.longRunningProcessRepository = longRunningProcessRepository;
-        this.userNotificationRepository = userNotificationRepository;
     }
 
     @Handle

@@ -9,14 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>web-video-actions</artifactId>
-    <name>BigConnect Explorer: Web: Plugin: Video actions</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.bigconnect</groupId>
-            <artifactId>dw-google-services-s2t</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <artifactId>web-image-actions</artifactId>
+    <name>BigConnect Explorer: Web: Plugin: Image actions</name>
 </project>

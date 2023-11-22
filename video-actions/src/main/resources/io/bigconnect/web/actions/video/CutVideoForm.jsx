@@ -73,7 +73,7 @@ define([
             }
 
             bcApi.connect().then(({dataRequest}) => {
-                dataRequest('nvr', 'cut', this.props.data.vertices[0].id, startTime.format('HH:mm:ss'), endTime.format('HH:mm:ss'))
+                dataRequest('video', 'cut', this.props.data.vertices[0].id, startTime.format('HH:mm:ss'), endTime.format('HH:mm:ss'))
                     .then(() => {
                         this.onCancel();
                     })

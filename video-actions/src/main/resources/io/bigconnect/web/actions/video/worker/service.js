@@ -1,4 +1,4 @@
-define('data/web-worker/services/nvr', ['data/web-worker/util/ajax'], function (ajax) {
+define('data/web-worker/services/video', ['data/web-worker/util/ajax'], function (ajax) {
     'use strict';
 
     return {
@@ -15,6 +15,10 @@ define('data/web-worker/services/nvr', ['data/web-worker/util/ajax'], function (
                 vertexIds,
                 title
             });
+        },
+
+        s2t: function (vertexId) {
+            return ajax('POST', '/video/s2t', { id: vertexId })
         }
     }
 })

@@ -56,7 +56,6 @@ public class GoogleActionsWebAppPlugin implements WebAppPlugin {
     @Override
     public void init(WebApp app, ServletContext servletContext, Handler authenticationHandler) {
         app.post("/google/translate", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, GoogleTranslate.class);
-        app.post("/google/s2t", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, GoogleSpeech2Text.class);
 
         app.registerJavaScript("/io/bigconnect/web/actions/google/plugin.js");
         app.registerJavaScript("/io/bigconnect/web/actions/google/speech2TextResult.js");

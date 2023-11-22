@@ -9,6 +9,7 @@ import com.mware.web.WebAppPlugin;
 import com.mware.web.framework.Handler;
 import com.mware.web.privilegeFilters.EditPrivilegeFilter;
 import io.bigconnect.web.actions.video.routes.CutVideo;
+import io.bigconnect.web.actions.video.routes.GoogleSpeech2Text;
 import io.bigconnect.web.actions.video.routes.MergeVideos;
 
 import javax.servlet.ServletContext;
@@ -21,6 +22,7 @@ public class VideoActionsWebAppPlugin implements WebAppPlugin {
     public void init(WebApp app, ServletContext servletContext, Handler authenticationHandler) {
         app.post("/video/cut", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, CutVideo.class);
         app.post("/video/merge", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, MergeVideos.class);
+        app.post("/video/s2t", authenticationHandler.getClass(), BcCsrfHandler.class, EditPrivilegeFilter.class, GoogleSpeech2Text.class);
 
         app.registerJavaScript("/io/bigconnect/web/actions/video/plugin.js");
 
@@ -28,6 +30,7 @@ public class VideoActionsWebAppPlugin implements WebAppPlugin {
         app.registerCompiledJavaScript("/io/bigconnect/web/actions/video/dist/MergeVideoForm.js");
         app.registerCompiledJavaScript("/io/bigconnect/web/actions/video/dist/CombineVideoActivityResult.js");
         app.registerCompiledJavaScript("/io/bigconnect/web/actions/video/dist/MergeVideoActivityResult.js");
+        app.registerJavaScript("/io/bigconnect/web/actions/video/speech2TextResult.js");
 
         app.registerWebWorkerJavaScript("/io/bigconnect/web/actions/video/worker/service.js");
 

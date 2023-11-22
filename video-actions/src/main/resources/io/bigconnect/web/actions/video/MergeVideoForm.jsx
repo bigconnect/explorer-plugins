@@ -70,7 +70,7 @@ define([
         onMerge(values) {
             const vertexIds = _.map(this.state.dataSource, v => v.id);
             bcApi.connect().then(({dataRequest}) => {
-                dataRequest('nvr', 'merge', vertexIds, values.title)
+                dataRequest('video', 'merge', vertexIds, values.title)
                     .then(() => {
                         this.onCancel();
                     })

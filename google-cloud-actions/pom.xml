@@ -13,11 +13,7 @@
     <name>BigConnect Explorer: Web: Plugin: Google Cloud actions</name>
 
     <dependencies>
-        <dependency>
-            <groupId>io.bigconnect</groupId>
-            <artifactId>dw-google-services-s2t</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>io.bigconnect</groupId>
             <artifactId>dw-google-services-translate</artifactId>

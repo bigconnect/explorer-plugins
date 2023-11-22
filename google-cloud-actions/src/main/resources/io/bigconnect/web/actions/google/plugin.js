@@ -43,29 +43,6 @@ require([
 ], function (registry, i18n, F, bcApi) {
     'use strict';
 
-    registry.registerExtension('org.bigconnect.activity', {
-        type: 's2t',
-        kind: 'longRunningProcess',
-        allowCancel: false,
-        titleRenderer: function(el, process) {
-            el.textContent = i18n('activity.tasks.type.s2t.title');
-            require([
-                'util/withDataRequest',
-                'util/vertex/formatters'
-            ], function(withDataRequest, F) {
-                withDataRequest.dataRequest('vertex', 'store', {
-                    workspaceId: process.workspaceId,
-                    vertexIds: [ process.vertexId ]
-                }).done(function(vertices) {
-                    if (vertices.length === 1) {
-                        el.textContent = F.string.truncate(F.vertex.title(vertices[0]), 16);
-                    }
-                });
-            });
-        },
-        finishedComponentPath: 'io/bigconnect/web/actions/google/speech2TextResult'
-    });
-
     registry.registerExtension('org.bigconnect.detail.toolbar', {
         title: i18n('google.menu'),
         event: 'google',
@@ -81,20 +58,6 @@ require([
                         return false;
 
                     return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
-                }
-            },
-            {
-                title: i18n('google.s2t.title'),
-                subtitle: i18n('google.s2t.subtitle'),
-                cls: 'requires-EDIT',
-                event: 'googleS2T',
-                canHandle: (objects) => {
-                    const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
-                    if (!hasLanguage)
-                        return false;
-
-                    return F.vertex.props(objects.vertices[0], "mediaVideoFormat").length > 0
-                        || F.vertex.props(objects.vertices[0], "mediaAudioFormat").length > 0;
                 }
             },
         ],
@@ -127,27 +90,6 @@ require([
                     $.growl.error({ title: 'Eroare trimitere document la servicul de traducere' });
                 });
         });
-        $(document).on('googleS2T', (e, data) => {
-            const vertex = data.vertices[0];
-            const inProgress = F.vertex.propRaw(vertex, "GS2TProgress");
 
-            if (inProgress) {
-                $.growl.warning({
-                    message: `Operatia este in executie. Folositi Refresh pentru a vedea progresul.`,
-                });
-                return;
-            }
-
-            api.dataRequest('google', 's2t', vertex.id)
-                .then((result) => {
-                    $.growl.notice({
-                        message: 'Obiectul a fost trimits catre Google. Folositi Refresh pentru a vedea progresul in panoul de activitati.',
-                    });
-                })
-                .catch(e => {
-                    console.log(e);
-                    $.growl.error({ title: 'Error', message: e.json && e.json.error ? e.json.error : 'Eroare necunoscuta' });
-                });
-        });
     });
 });

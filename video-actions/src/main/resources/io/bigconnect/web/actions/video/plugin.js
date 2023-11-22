@@ -45,6 +45,29 @@ require([
     'use strict';
 
     registry.registerExtension('org.bigconnect.activity', {
+        type: 's2t',
+        kind: 'longRunningProcess',
+        allowCancel: false,
+        titleRenderer: function(el, process) {
+            el.textContent = i18n('activity.tasks.type.s2t.title');
+            require([
+                'util/withDataRequest',
+                'util/vertex/formatters'
+            ], function(withDataRequest, F) {
+                withDataRequest.dataRequest('vertex', 'store', {
+                    workspaceId: process.workspaceId,
+                    vertexIds: [ process.vertexId ]
+                }).done(function(vertices) {
+                    if (vertices.length === 1) {
+                        el.textContent = F.string.truncate(F.vertex.title(vertices[0]), 16);
+                    }
+                });
+            });
+        },
+        finishedComponentPath: 'io/bigconnect/web/actions/video/speech2TextResult'
+    });
+
+    registry.registerExtension('org.bigconnect.activity', {
         type: 'combine-video',
         kind: 'longRunningProcess',
         allowCancel: true, // long running processes don't support cancelling BUT ! We leave this for the cancel button to appear. This button will remove the process from UI (needed for crashes)
@@ -69,10 +92,23 @@ require([
         event: 'videoMenu',
         submenu: [
             {
+                title: i18n('detail.toolbar.s2t.title'),
+                subtitle: i18n('detail.toolbar.s2t.subtitle'),
+                cls: 'requires-EDIT',
+                event: 'googleS2T',
+                canHandle: (objects) => {
+                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
+                }
+            },
+            {
                 title: i18n('detail.toolbar.cutVideo'),
                 subtitle: i18n('detail.toolbar.cutVideo.cutVideoSubtitle'),
                 cls: 'requires-EDIT',
-                event: 'cutVideo'
+                event: 'cutVideo',
+                canHandle: (objects) => {
+                    const concept = F.vertex.concept(objects.vertices[0]);
+                    return ONTOLOGY_CONSTANTS.CONCEPT_TYPE_VIDEO === concept.id;
+                }
             }
         ],
         canHandle: (objects) => {
@@ -80,8 +116,8 @@ require([
             if (!singleVertex)
                 return false;
 
-            const concept = F.vertex.concept(objects.vertices[0]);
-            return ONTOLOGY_CONSTANTS.CONCEPT_TYPE_VIDEO === concept.id;
+            return F.vertex.props(objects.vertices[0], "mediaVideoFormat").length > 0
+                || F.vertex.props(objects.vertices[0], "mediaAudioFormat").length > 0;
         }
     });
 
@@ -150,6 +186,29 @@ require([
                     })
                     .attach();
             })
+        });
+
+        $(document).on('googleS2T', (e, data) => {
+            const vertex = data.vertices[0];
+            const inProgress = F.vertex.propRaw(vertex, "GS2TProgress");
+
+            if (inProgress) {
+                $.growl.warning({
+                    message: `Operatia este in executie. Folositi Refresh pentru a vedea progresul.`,
+                });
+                return;
+            }
+
+            api.dataRequest('video', 's2t', vertex.id)
+                .then((result) => {
+                    $.growl.notice({
+                        message: 'Obiectul a fost trimits catre Cloud. Folositi Refresh pentru a vedea progresul in panoul de activitati.',
+                    });
+                })
+                .catch(e => {
+                    console.log(e);
+                    $.growl.error({ title: 'Error', message: e.json && e.json.error ? e.json.error : 'Eroare necunoscuta' });
+                });
         });
     });
 });
