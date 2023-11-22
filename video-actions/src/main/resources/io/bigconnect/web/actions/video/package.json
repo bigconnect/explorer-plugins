@@ -1,0 +1,29 @@
+{
+  "name": "bigconnect-web-plugin-video",
+  "description": "",
+  "main": "plugin.js",
+  "author": "MWARE SOLUTIONS SRL",
+  "license": "BigConnect License",
+  "private": true,
+  "dependencies": {
+    "array-move": "^4.0.0",
+    "react-sortable-hoc": "^2.0.0",
+    "videojs-playlist": "^4.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-transform-regenerator": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-flow": "^7.12.1",
+    "@babel/preset-react": "^7.12.7",
+    "babel-loader": "^8.2.1",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "scripts": {
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+  }
+}

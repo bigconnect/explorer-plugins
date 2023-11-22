@@ -21,6 +21,7 @@
         <module>map-product</module>
         <module>rest-explorer</module>
         <module>google-cloud-actions</module>
+        <module>video-actions</module>
     </modules>
 
     <dependencies>

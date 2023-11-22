@@ -1,0 +1,2 @@
+io.bigconnect.web.actions.video.CutVideoLongRunningProcessWorker
+io.bigconnect.web.actions.video.MergeVideosLongRunningProcessWorker
