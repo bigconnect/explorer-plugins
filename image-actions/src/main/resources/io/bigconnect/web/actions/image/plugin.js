@@ -58,6 +58,12 @@ require([
                 subtitle: i18n('detail.toolbar.ocr.subtitle'),
                 cls: 'requires-EDIT',
                 event: 'ocr'
+            },
+            {
+                title: i18n('detail.toolbar.caption.title'),
+                subtitle: i18n('detail.toolbar.caption.subtitle'),
+                cls: 'requires-EDIT',
+                event: 'caption'
             }
         ],
         canHandle: (objects) => {
@@ -88,6 +94,20 @@ require([
         $(document).on('ocr', (e, data) => {
             const vertex = data.vertices[0];
             api.dataRequest('image', 'ocr', vertex.id)
+                .then(() => {
+                    $.growl.notice({
+                        message: 'Obiectul a fost trimits catre serviciul de detectie. Folositi Refresh pentru a vedea progresul.',
+                    });
+                })
+                .catch(e => {
+                    console.log(e);
+                    $.growl.error({ title: 'Eroare trimitere document la servicul de detectie' });
+                });
+        });
+
+        $(document).on('caption', (e, data) => {
+            const vertex = data.vertices[0];
+            api.dataRequest('image', 'caption', vertex.id)
                 .then(() => {
                     $.growl.notice({
                         message: 'Obiectul a fost trimits catre serviciul de detectie. Folositi Refresh pentru a vedea progresul.',
