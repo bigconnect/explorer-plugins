@@ -11,4 +11,12 @@
 
     <artifactId>web-image-actions</artifactId>
     <name>BigConnect Explorer: Web: Plugin: Image actions</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.bigconnect</groupId>
+            <artifactId>dw-image-object-detector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
