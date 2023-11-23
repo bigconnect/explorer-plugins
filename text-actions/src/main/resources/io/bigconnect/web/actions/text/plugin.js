@@ -44,20 +44,25 @@ require([
     'use strict';
 
     registry.registerExtension('org.bigconnect.detail.toolbar', {
-        title: i18n('google.menu'),
-        event: 'google',
+        title: i18n('text.menu'),
+        event: 'text',
         submenu: [
             {
-                title: i18n('google.translate.title'),
-                subtitle: i18n('google.translate.subtitle'),
+                title: i18n('detail.toolbar.translate.title'),
+                subtitle: i18n('detail.toolbar.translate.subtitle'),
                 cls: 'requires-EDIT',
-                event: 'googleTranslate',
+                event: 'cloudTranslate',
                 canHandle: (objects) => {
-                    const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
-                    if (!hasLanguage)
-                        return false;
-
-                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
+                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
+                }
+            },
+            {
+                title: i18n('detail.toolbar.summary.title'),
+                subtitle: i18n('detail.toolbar.summary.subtitle'),
+                cls: 'requires-EDIT',
+                event: 'summary',
+                canHandle: (objects) => {
+                    return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
                 }
             },
         ],
@@ -66,28 +71,36 @@ require([
             if (!singleVeretx)
                 return false;
 
-            const hasLanguage = F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_RAW_LANGUAGE).length > 0;
-            if (!hasLanguage)
-                return false;
-
-            return (F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0
-                    || F.vertex.props(objects.vertices[0], "mediaVideoFormat").length > 0
-                    || F.vertex.props(objects.vertices[0], "mediaAudioFormat").length > 0)
+            return F.vertex.props(objects.vertices[0], ONTOLOGY_CONSTANTS.PROP_TEXT).length > 0;
         }
     });
 
     bcApi.connect().then((api) => {
-        $(document).on('googleTranslate', (e, data) => {
+        $(document).on('cloudTranslate', (e, data) => {
             const vertex = data.vertices[0];
-            api.dataRequest('google', 'translate', vertex.id)
+            api.dataRequest('text', 'translate', vertex.id)
                 .then(() => {
                     $.growl.notice({
-                        message: 'Obiectul a fost trimits catre Google. Folositi Refresh pentru a vedea progresul.',
+                        message: 'Obiectul a fost trimits catre serviciul de traducere. Folositi Refresh pentru a vedea progresul.',
                     });
                 })
                 .catch(e => {
                     console.log(e);
                     $.growl.error({ title: 'Eroare trimitere document la servicul de traducere' });
+                });
+        });
+
+        $(document).on('summary', (e, data) => {
+            const vertex = data.vertices[0];
+            api.dataRequest('text', 'summary', vertex.id)
+                .then(() => {
+                    $.growl.notice({
+                        message: 'Obiectul a fost trimits catre serviciul de sumarizare. Folositi Refresh pentru a vedea progresul.',
+                    });
+                })
+                .catch(e => {
+                    console.log(e);
+                    $.growl.error({ title: 'Eroare trimitere document la servicul de sumarizare' });
                 });
         });
 

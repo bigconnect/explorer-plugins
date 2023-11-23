@@ -1,4 +1,4 @@
-package io.bigconnect.web.actions.google.routes;
+package io.bigconnect.web.actions.text.routes;
 
 import com.mware.core.ingest.dataworker.ElementOrPropertyStatus;
 import com.mware.core.model.workQueue.Priority;

@@ -11,4 +11,17 @@
 
     <artifactId>web-text-actions</artifactId>
     <name>BigConnect Explorer: Web: Plugin: Text actions</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.bigconnect</groupId>
+            <artifactId>dw-google-services-translate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.bigconnect</groupId>
+            <artifactId>dw-text-summary</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
