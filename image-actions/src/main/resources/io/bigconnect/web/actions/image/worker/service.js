@@ -4,6 +4,9 @@ define('data/web-worker/services/image', ['data/web-worker/util/ajax'], function
     return {
         objects: function (vertexId) {
             return ajax('POST', '/image/objects', { id: vertexId })
+        },
+        ocr: function (vertexId) {
+            return ajax('POST', '/image/ocr', { id: vertexId })
         }
     }
 })
