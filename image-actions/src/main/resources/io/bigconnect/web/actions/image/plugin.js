@@ -64,6 +64,12 @@ require([
                 subtitle: i18n('detail.toolbar.caption.subtitle'),
                 cls: 'requires-EDIT',
                 event: 'caption'
+            },
+            {
+                title: i18n('detail.toolbar.detect-faces.title'),
+                subtitle: i18n('detail.toolbar.detect-faces.subtitle'),
+                cls: 'requires-EDIT',
+                event: 'faces'
             }
         ],
         canHandle: (objects) => {
@@ -108,6 +114,20 @@ require([
         $(document).on('caption', (e, data) => {
             const vertex = data.vertices[0];
             api.dataRequest('image', 'caption', vertex.id)
+                .then(() => {
+                    $.growl.notice({
+                        message: 'Obiectul a fost trimits catre serviciul de detectie. Folositi Refresh pentru a vedea progresul.',
+                    });
+                })
+                .catch(e => {
+                    console.log(e);
+                    $.growl.error({ title: 'Eroare trimitere document la servicul de detectie' });
+                });
+        });
+
+        $(document).on('faces', (e, data) => {
+            const vertex = data.vertices[0];
+            api.dataRequest('image', 'faces', vertex.id)
                 .then(() => {
                     $.growl.notice({
                         message: 'Obiectul a fost trimits catre serviciul de detectie. Folositi Refresh pentru a vedea progresul.',

@@ -28,5 +28,10 @@
             <artifactId>dw-image-captioning</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.bigconnect</groupId>
+            <artifactId>dw-image-face-detector</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

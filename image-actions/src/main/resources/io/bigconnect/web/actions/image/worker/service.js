@@ -11,5 +11,8 @@ define('data/web-worker/services/image', ['data/web-worker/util/ajax'], function
         caption: function (vertexId) {
             return ajax('POST', '/image/caption', { id: vertexId })
         },
+        faces: function (vertexId) {
+            return ajax('POST', '/image/faces', { id: vertexId })
+        },
     }
 })
