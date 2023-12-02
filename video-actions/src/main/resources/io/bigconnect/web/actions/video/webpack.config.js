@@ -30,7 +30,6 @@ var BcAmdExternals = [
     'data/web-worker/store/workspace/actions',
     'data/web-worker/store/ontology/selectors',
     'data/web-worker/util/ajax',
-    'com/mware/web/plugin/nvr/dist/actions-impl',
     'public/v1/api',
     'util/component/attacher',
     'util/formatters',
