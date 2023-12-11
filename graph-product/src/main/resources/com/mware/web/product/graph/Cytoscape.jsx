@@ -1001,11 +1001,15 @@ define([
                 const keyGen = (src, target) => [src, target].sort().join('');
                 const edgesById = _.groupBy(
                     newData.elements.edges.filter(e => {
-                        const edgeLabels = e.data.edges.reduce((all, e) => {
-                            all.push(e.label);
-                            return all;
-                        }, []);
-                        return edgeLabels.some(label => labels.includes(label));
+                        if (e.data.edges) {
+                            const edgeLabels = e.data.edges.reduce((all, e) => {
+                                all.push(e.label);
+                                return all;
+                            }, []);
+                            return edgeLabels.some(label => labels.includes(label));
+                        } else {
+                            return false;
+                        }
                     }),
                     e => keyGen(e.data.source, e.data.target)
                 );
