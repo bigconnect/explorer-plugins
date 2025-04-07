@@ -489,12 +489,24 @@ define([
         },
 
         getDefaultViewParameters() {
-            return {
-                zoom: 2,
-                minZoom: 1,
-                center: [0, 0]
+            console.log('Setting default view parameters for map');
+            // Restrict the map view to Ukraine and surrounding area
+            const params = {
+                zoom: 5,  // Start more zoomed in
+                minZoom: 4, // Don't allow zooming out too far
+                maxZoom: 18,
+                // Center on Ukraine (approximate coordinates)
+                center: ol.proj.fromLonLat([31.1656, 48.3794]),
+                // Add extent constraint to keep users within your tile coverage area
+                extent: ol.proj.transformExtent([
+                    20, 44,    // Southwest corner
+                    40, 53     // Northeast corner
+                ], 'EPSG:4326', 'EPSG:3857')
             };
+            console.log('Default view parameters:', params);
+            return params;
         },
+
 
         configureMap() {
             const { baseSource, baseSourceOptions = {}, sourcesByLayerId, layerExtensions } = this.props;

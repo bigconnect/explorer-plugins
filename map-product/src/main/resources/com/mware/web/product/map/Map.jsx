@@ -46,7 +46,7 @@ define([
     'util/deepObjectCache',
     'util/mapConfig',
     './util/cache'
-], function(
+], function (
     createReactClass,
     PropTypes,
     OpenLayers,
@@ -68,7 +68,7 @@ define([
      */
     registry.documentExtensionPoint('org.bigconnect.map.options',
         'Add components to the map options toolbar',
-        function(e) {
+        function (e) {
             return ('identifier' in e) && ('optionComponentPath' in e);
         },
         'https://docs.bigconnect.io/developer-guide/plugin-development/web-plugins/extension-point-reference-1/map-options'
@@ -93,11 +93,11 @@ define([
             onUpdateViewport: PropTypes.func.isRequired,
             onSelectElements: PropTypes.func.isRequired,
             onVertexMenu: PropTypes.func.isRequired,
-            elements: PropTypes.shape({ vertices: PropTypes.object, edges: PropTypes.object })
+            elements: PropTypes.shape({vertices: PropTypes.object, edges: PropTypes.object})
         },
 
         getInitialState() {
-            return { viewport: this.props.viewport, generatePreview: true }
+            return {viewport: this.props.viewport, generatePreview: true}
         },
 
         shouldComponentUpdate(nextProps) {
@@ -135,8 +135,8 @@ define([
             $(this.wrap).on('selectAll', (event) => {
                 this.props.onSelectAll(this.props.product.id);
             })
-            $(document).on('elementsCut.org-bigconnect-map', (event, { vertexIds }) => {
-                this.props.onRemoveElementIds({ vertexIds, edgeIds: [] });
+            $(document).on('elementsCut.org-bigconnect-map', (event, {vertexIds}) => {
+                this.props.onRemoveElementIds({vertexIds, edgeIds: []});
             })
             $(document).on('elementsPasted.org-bigconnect-map', (event, elementIds) => {
                 this.props.onDropElementIds(elementIds)
@@ -145,15 +145,17 @@ define([
             this.saveViewportDebounce = _.debounce(this.saveViewport, 250);
 
             this.legacyListeners({
-                fileImportSuccess: { node: $('.products-full-pane.visible')[0], handler: (event, { vertexIds }) => {
-                    this.props.onDropElementIds({vertexIds});
-                }}
+                fileImportSuccess: {
+                    node: $('.products-full-pane.visible')[0], handler: (event, {vertexIds}) => {
+                        this.props.onDropElementIds({vertexIds});
+                    }
+                }
             })
         },
 
         componentWillUnmount() {
             this.mounted = false;
-            this.removeEvents.forEach(({ node, func, events }) => {
+            this.removeEvents.forEach(({node, func, events}) => {
                 $(node).off(events, func);
             });
 
@@ -164,23 +166,36 @@ define([
 
         componentWillReceiveProps(nextProps) {
             if (nextProps.product.id === this.props.product.id) {
-                this.setState({ viewport: {}, generatePreview: false })
+                this.setState({viewport: {}, generatePreview: false})
             } else {
                 this.saveViewport(this.props)
-                this.setState({ viewport: nextProps.viewport || {}, generatePreview: true })
+                this.setState({viewport: nextProps.viewport || {}, generatePreview: true})
             }
         },
 
         render() {
-            const { viewport, generatePreview } = this.state;
-            const { product, registry, panelPadding, focused, layerConfig, setLayerOrder, onAddSelection, onSelectElements } = this.props;
-            const { source: baseSource, sourceOptions: baseSourceOptions, ...config } = mapConfig();
+            const {viewport, generatePreview} = this.state;
+            const {
+                product,
+                registry,
+                panelPadding,
+                focused,
+                layerConfig,
+                setLayerOrder,
+                onAddSelection,
+                onSelectElements
+            } = this.props;
+            const {source: baseSource, sourceOptions: baseSourceOptions, ...config} = mapConfig();
             const layerExtensions = _.indexBy(registry['org.bigconnect.map.layer'], 'id');
 
             return (
-                <div className="org-bigconnect-map" style={{height:'100%', marginTop: '2px'}} ref={r => {this.wrap = r}}>
+                <div className="org-bigconnect-map" style={{height: '100%', marginTop: '2px'}} ref={r => {
+                    this.wrap = r
+                }}>
                     <OpenLayers
-                        ref={c => {this._openlayers = c}}
+                        ref={c => {
+                            this._openlayers = c
+                        }}
                         product={product}
                         focused={focused}
                         baseSource={baseSource}
@@ -226,7 +241,7 @@ define([
             clusterHover.hide(ol, map);
         },
 
-        onContextTap(ol, { map, pixel, originalEvent }) {
+        onContextTap(ol, {map, pixel, originalEvent}) {
             clusterHover.hide(ol, map);
 
             const productVertices = this.props.product.extendedData.vertices;
@@ -254,23 +269,23 @@ define([
             }
 
             if (vertexId) {
-                const { pageX, pageY } = originalEvent;
+                const {pageX, pageY} = originalEvent;
                 this.props.onVertexMenu(
                     originalEvent.target,
                     vertexId,
-                    { x: pageX, y: pageY }
+                    {x: pageX, y: pageY}
                 );
             }
         },
 
         onUpdatePreview() {
-            const { onUpdatePreview, product } = this.props;
+            const {onUpdatePreview, product} = this.props;
 
             onUpdatePreview(product.id);
         },
 
         onViewport(event) {
-            const { product: { id: productId } } = this.props;
+            const {product: {id: productId}} = this.props;
             const view = event.target;
             const zoom = view.getZoom();
             const pan = [...view.getCenter()];
@@ -278,7 +293,7 @@ define([
             if (!this.currentViewport) {
                 this.currentViewport = {};
             }
-            this.currentViewport[productId] = { zoom, pan };
+            this.currentViewport[productId] = {zoom, pan};
 
             this.saveViewportDebounce(this.props);
         },
@@ -294,9 +309,9 @@ define([
         },
 
         getGeometry(edgeInfo, element, ontology) {
-            const { registry } = this.props;
+            const {registry} = this.props;
             const calculatedGeometry = registry['org.bigconnect.map.geometry']
-                .reduce((geometries, { canHandle, geometry, layer }) => {
+                .reduce((geometries, {canHandle, geometry, layer}) => {
                     /**
                      * Decide which elements to apply geometry
                      *
@@ -348,9 +363,9 @@ define([
         },
 
         getStyles(edgeInfo, element, ontology) {
-            const { registry } = this.props;
+            const {registry} = this.props;
             const calculatedStyles = registry['org.bigconnect.map.style']
-                .reduce((styles, { canHandle, style, selectedStyle }) => {
+                .reduce((styles, {canHandle, style, selectedStyle}) => {
 
                     /**
                      * Decide which elements to apply style
@@ -396,7 +411,7 @@ define([
                         }
                     }
                     return styles;
-                }, { normal: [], selected: []})
+                }, {normal: [], selected: []})
 
             if (calculatedStyles.normal.length || calculatedStyles.selected.length) {
                 return calculatedStyles;
@@ -404,16 +419,16 @@ define([
         },
 
         mapElementsToSources() {
-            const { product, workspaceId } = this.props;
-            const { extendedData } = product;
+            const {product, workspaceId} = this.props;
+            const {extendedData} = product;
             if (!extendedData || !extendedData.vertices) return [];
-            const { vertices, edges } = this.props.elements;
-            const elementsSelectedById = { ..._.indexBy(this.props.selection.vertices), ..._.indexBy(this.props.selection.edges) };
+            const {vertices, edges} = this.props.elements;
+            const elementsSelectedById = {..._.indexBy(this.props.selection.vertices), ..._.indexBy(this.props.selection.edges)};
             const elements = Object.values(vertices).concat(Object.values(edges));
             const geoLocationProperties = _.groupBy(this.props.ontologyProperties, 'dataType').geoLocation;
-            const addOrUpdateSource = ({ id, ...rest }, feature) => {
+            const addOrUpdateSource = ({id, ...rest}, feature) => {
                 if (!sources[id]) {
-                    sources[id] = { features: [], ...rest };
+                    sources[id] = {features: [], ...rest};
                 } else if (!sources[id].features) {
                     sources[id].features = [];
                 }
@@ -439,7 +454,7 @@ define([
                 const selected = el.id in elementsSelectedById;
 
                 if (extendedData.vertices[el.id] && extendedData.vertices[el.id].ancillary) {
-                    addOrUpdateSource({ id: 'ancillary', type: 'ancillary', ...layer }, {
+                    addOrUpdateSource({id: 'ancillary', type: 'ancillary', ...layer}, {
                         id: el.id,
                         element: el,
                         selected,
@@ -468,12 +483,12 @@ define([
                     }
                 }
 
-                const geoLocations = geoLocationProperties && geoLocationProperties.reduce((props, { title }) => {
+                const geoLocations = geoLocationProperties && geoLocationProperties.reduce((props, {title}) => {
                         const geoProps = F.vertex.props(el, title);
                         geoProps.forEach(geoProp => {
-                            const { value } = geoProp;
+                            const {value} = geoProp;
                             if (value) {
-                                const { latitude, longitude } = value;
+                                const {latitude, longitude} = value;
                                 if (!isNaN(latitude) && !isNaN(longitude)) {
                                     const validCoordinates = (latitude >= -90 && latitude <= 90) && (longitude >= -180 && longitude <= 180);
                                     if (validCoordinates) {
@@ -486,15 +501,16 @@ define([
                         })
                         return props;
                     }, []),
-                    iconUrl = 'map/marker/image?' + $.param({
+                    iconUrl = '/jsc/map/marker/image?' + $.param({
                         type: el.conceptType,
                         workspaceId: this.props.workspaceId,
                         scale: this.props.pixelRatio > 1 ? '2' : '1',
-                    }),
-                    iconUrlSelected = `${iconUrl}&selected=true`;
+                    });
+                    console.log('Marker icon URL:', iconUrl);
+                    const iconUrlSelected = `${iconUrl}&selected=true`;
 
                 if (geoLocations.length) {
-                    addOrUpdateSource({ id: 'cluster', ...layer }, {
+                    addOrUpdateSource({id: 'cluster', ...layer}, {
                         id: el.id,
                         element: el,
                         selected,
@@ -523,7 +539,7 @@ define([
                     node = handler.node;
                     func = handler.handler;
                 }
-                this.removeEvents.push({ node, func, events });
+                this.removeEvents.push({node, func, events});
                 $(node).on(events, func);
             })
         },
