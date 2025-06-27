@@ -59,6 +59,7 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Set;
+import java.util.HashSet;
 
 public class Login implements ParameterizedHandler {
     private final UserRepository userRepository;
@@ -79,9 +80,17 @@ public class Login implements ParameterizedHandler {
     @Handle
     public JSONObject handle(
             HttpServletRequest request,
-            @Required(name = "username") String username,
-            @Required(name = "password") String password
+            @Required(name = "username", allowEmpty = true) String username,
+            @Required(name = "password", allowEmpty = true) String password
     ) {
+        // Check if this is an SSO redirect
+        String ssoUsername = request.getParameter("sso_username");
+        if (ssoUsername != null && !ssoUsername.trim().isEmpty()) {
+            // This is an SSO user creation request
+            return handleSSOUserCreation(ssoUsername.trim(), request);
+        }
+
+        // Regular login flow
         username = username.trim();
         password = password.trim();
 
@@ -116,6 +125,32 @@ public class Login implements ParameterizedHandler {
                 throw new BcAccessDeniedException("", user, null);
             }
         }
+    }
+
+    private JSONObject handleSSOUserCreation(String username, HttpServletRequest request) {
+        if(ldapAuthenticator.isLdapEnabled()) {
+            // Try to get user info from LDAP
+            Set<String> groups = ldapAuthenticator.getGroupMemberships(username);
+            if (groups != null) {
+                // User exists in LDAP, create them locally
+                User user = userRepository.findOrAddUser(username, username, null, (String) null);
+                addRolesFromLdapGroups(user, groups);
+
+                if (ldapAuthenticator.hasAdminFlag(username)) {
+                    String[] adminPrivileges = new String[] {
+                            Privilege.READ, Privilege.COMMENT, Privilege.EDIT, Privilege.PUBLISH,
+                            Privilege.SEARCH_SAVE_GLOBAL, Privilege.HISTORY_READ,
+                            Privilege.ADMIN, Privilege.ONTOLOGY_ADD, Privilege.ONTOLOGY_PUBLISH
+                    };
+                    privilegeRepository.setPrivileges(user, ImmutableSet.copyOf(adminPrivileges), new SystemUser());
+                }
+
+                return loginUser(user, username, request);
+            }
+        }
+
+        // User not found in LDAP
+        throw new BcAccessDeniedException("SSO user not found in LDAP", null, null);
     }
 
     private void addRolesFromLdapGroups(User user, Set<String> groupMemberships) {
